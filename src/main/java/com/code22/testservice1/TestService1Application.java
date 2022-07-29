@@ -19,7 +19,7 @@ public class TestService1Application {
     @GetMapping(value="/health", produces = "application/json")
     public Message getHealth()   {
         Message testMsg = new Message();
-        testMsg.setMsgString("Health A.OK!");
+        testMsg.setMsgString("Health A.OK! with Service 1");
         //ObjectMapper objectMapper = new ObjectMapper();
         return  testMsg;
 
