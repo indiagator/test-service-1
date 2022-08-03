@@ -3,15 +3,21 @@ package com.code22.testservice1;
 
 import com.code22.testservice1.model.Customer;
 import com.code22.testservice1.model.CustomerRepository;
+import com.code22.testservice1.model.Kitchen;
 import com.code22.testservice1.model.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
 @SpringBootApplication
+@EnableDiscoveryClient
 @RestController
 @RequestMapping("api/0.1/test-service-1")
 public class TestService1Application {
@@ -21,6 +27,9 @@ public class TestService1Application {
 
     @Autowired
     public CustomerRepository customerRepository;
+
+    @Autowired
+    private WebClient.Builder webClientBuilder;
 
     public static void main(String[] args) {
         SpringApplication.run(TestService1Application.class, args);
@@ -54,6 +63,12 @@ public class TestService1Application {
     public List<Customer> getAllCustomers ()
     {
         return (List<Customer>) customerRepository.findAll();
+    }
+
+    @GetMapping("/getAllKitchens")
+    public Flux<Kitchen> getAllKitchens()
+    {
+        return webClientBuilder.build().get().uri("http://test-service-2/api/0.1/test-service-2/getAll").retrieve().bodyToFlux(Kitchen.class);
     }
 
 }
