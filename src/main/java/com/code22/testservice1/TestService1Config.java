@@ -1,5 +1,6 @@
 package com.code22.testservice1;
 
+import com.code22.testservice1.model.TestModelClass;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -16,10 +17,15 @@ public class TestService1Config{
     public String name;
 
     @Bean
-    @LoadBalanced
     public WebClient.Builder loadBalancedWebClientBuilder()
     {
         return WebClient.builder();
+    }
+
+    @Bean
+    public TestModelClass loadTestModelBean(TestModelClass modelClass)
+    {
+        return modelClass;
     }
 
 }
